@@ -1,12 +1,12 @@
 outside_conditions
 
-Python 3 script to read observations of local station. Values inserted into a SQL database
+Python 3 script to read observations of local station. Values inserted into a InfluxDB database
 running on another network node
 
 Instructions - weather polling
 1. sudo apt-get install python-pip
-2. Install myslq-connector - sudo apt-get -y install python3-mysql.connector
-3. Create SQL table 'outside_conditions' in host db, with columns:
+# replace with influxdb # 2. Install myslq-connector - sudo apt-get -y install python3-mysql.connector
+#3. Create SQL table 'outside_conditions' in host db, with columns:
 air_temp float,
 apparent_t float,
 cloud varchar(40),
