@@ -37,4 +37,4 @@ while True:
     print(reading_influx)
 
     client.publish(topic,str(reading_influx))
-    time.sleep(600)
+    time.sleep(10)
