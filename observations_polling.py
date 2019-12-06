@@ -28,6 +28,7 @@ def response(url):
 
 while True:
 
+    client.connect(broker_address)
     locals().update(response(url))
     
     reading_ts = datetime.datetime.strptime(aifstime_utc, '%Y%m%d%H%M%S')
