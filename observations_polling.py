@@ -30,11 +30,11 @@ while True:
 
     locals().update(response(url))
     
-    reading_ts = datetime.datetime.strptime(local_date_time_full, '%Y%m%d%H%M%S')
-    reading_age = (datetime.datetime.now() - reading_ts).seconds
+    reading_ts = datetime.datetime.strptime(aifstime_utc, '%Y%m%d%H%M%S')
+    reading_age = (datetime.datetime.utcnow() - reading_ts).seconds
 
     reading_influx = "%s,location=%s air_temp=%s,apparent_t=%s,reading_age=%s" % (measurement, location, air_temp, apparent_t, reading_age)
     print(reading_influx)
 
     client.publish(topic,str(reading_influx))
-    time.sleep(600)
+    time.sleep(10)
