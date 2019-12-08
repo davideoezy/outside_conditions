@@ -16,7 +16,7 @@ url = 'http://reg.bom.gov.au/fwo/IDV60901/IDV60901.94870.json'
 
 # Broker details:
 broker_address="192.168.0.10" 
-client = mqtt.Client("P1")
+client = mqtt.Client("docker_1")
 client.connect(broker_address)
 
 def response(url):
@@ -28,7 +28,6 @@ def response(url):
 
 while True:
 
-    client.connect(broker_address)
     locals().update(response(url))
     
     reading_ts = datetime.datetime.strptime(aifstime_utc, '%Y%m%d%H%M%S')

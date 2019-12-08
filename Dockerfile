@@ -5,4 +5,4 @@ ENV TZ=Australia/Melbourne
 RUN pip install -r requirements.txt 
 WORKDIR /.
 ADD observations_polling.py /
-CMD [ "python", "./observations_polling.py" ]
+CMD [ "python", "-u", "./observations_polling.py" ]
