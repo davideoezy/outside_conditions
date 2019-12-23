@@ -7,7 +7,7 @@ import time
 import paho.mqtt.client as mqtt
 
 # Set variables
-topic = "sensors/outside/observations"
+topic = "home/outside/status"
 measurement = "temperature"
 location = "outside"
 
@@ -33,8 +33,10 @@ while True:
     reading_ts = datetime.datetime.strptime(aifstime_utc, '%Y%m%d%H%M%S')
     reading_age = (datetime.datetime.utcnow() - reading_ts).seconds
 
-    reading_influx = "%s,location=%s air_temp=%s,apparent_t=%s,reading_age=%s" % (measurement, location, air_temp, apparent_t, reading_age)
-    print(reading_influx)
+    dict_msg={"air_temp":air_temp, "apparent_t":apparent_t, "reading_age":reading_age}
+    msg = json.dumps(dict_msg)
 
-    client.publish(topic,str(reading_influx))
-    time.sleep(600)
+    print(msg)
+
+    client.publish(topic,msg)
+    time.sleep(10)
