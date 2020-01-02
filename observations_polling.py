@@ -33,7 +33,19 @@ while True:
     reading_ts = datetime.datetime.strptime(aifstime_utc, '%Y%m%d%H%M%S')
     reading_age = (datetime.datetime.utcnow() - reading_ts).seconds
 
-    dict_msg={"measurement":measurementName, fields: {"air_temp":air_temp, "apparent_t":apparent_t, "reading_age":reading_age}, tags: {"location":location}}
+    dict_msg=[
+        {
+            "measurement":measurementName, 
+            "fields": {
+                "air_temp":air_temp, 
+                "apparent_t":apparent_t, 
+                "reading_age":reading_age
+                }, 
+            "tags": {
+                "location":location
+                }
+        }
+    ]
     msg = json.dumps(dict_msg)
 
     print(msg)
