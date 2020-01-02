@@ -39,4 +39,4 @@ while True:
     print(msg)
 
     client.publish(topic,msg)
-    time.sleep(600)
+    time.sleep(10)
