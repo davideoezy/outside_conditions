@@ -4,19 +4,20 @@ import urllib.request
 import json
 import datetime
 import time
-import mysql.connector as mariadb
+import paho.mqtt.client as mqtt
 
 # Set variables
+topic = "home/outside/sensor"
+measurementName = "temperature"
+location = "outside"
 
 # BOM readings
 url = 'http://reg.bom.gov.au/fwo/IDV60901/IDV60901.94870.json'
 
-# DB details
-db_host = '192.168.0.10'
-db_host_port = '3306'
-db_user = 'rpi'
-db_pass = 'warm_me'
-db = 'temp_logger'
+# Broker details:
+broker_address="192.168.0.10" 
+client = mqtt.Client("docker_1")
+client.connect(broker_address, keepalive=500)
 
 def response(url):
     with urllib.request.urlopen(url) as response: 
@@ -26,63 +27,17 @@ def response(url):
     return(current_reading)
 
 while True:
-    
+
     locals().update(response(url))
     
-    reading_ts = datetime.datetime.strptime(local_date_time_full, '%Y%m%d%H%M%S').strftime('%Y-%m-%d %H:%M:%S')
+    reading_ts = datetime.datetime.strptime(aifstime_utc, '%Y%m%d%H%M%S')
+    reading_age = (datetime.datetime.utcnow() - reading_ts).seconds
 
-    insert_stmt = """
-INSERT INTO outside_conditions (
-air_temp,
-apparent_t,
-cloud,
-cloud_oktas,
-dewpt,
-gust_kmh,
-press,
-rain_trace,
-rel_hum,
-vis_km,
-wind_dir,
-wind_spd_kmh,
-reading_ts)
-VALUES
-(%s,
-%s,
-'%s',
-%s,
-%s,
-%s,
-%s,
-%s,
-%s,
-%s,
-'%s',
-%s,
-'%s')""" % (air_temp, 
-            apparent_t,
-            cloud, 
-            cloud_oktas, 
-            dewpt, 
-            gust_kmh, 
-            press, 
-            rain_trace, 
-            rel_hum, 
-            vis_km, 
-            wind_dir, 
-            wind_spd_kmh, 
-            reading_ts)
-
+    dict_msg={"location":location,"temperature":air_temp, "feels_like":apparent_t, "humidity":rel_hum}
     
-    con = mariadb.connect(host = db_host, port = db_host_port, user = db_user, password = db_pass, database = db)
-    cur = con.cursor()
+    msg = json.dumps(dict_msg)
 
-    try:
-        cur.execute(insert_stmt)
-        con.commit()
-    except:
-        con.rollback()
+#    print(msg)
 
-    con.close()
+    client.publish(topic,msg)
     time.sleep(600)
-

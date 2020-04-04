@@ -1,4 +1,4 @@
-mysql.connector==2.1.6
+#mysql.connector==2.1.6
 # numpy
 # signal
 # sys
@@ -11,4 +11,5 @@ datetime
 # subprocess
 # json
 # urllib
+paho-mqtt
 
