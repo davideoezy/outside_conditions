@@ -28,16 +28,19 @@ def response(url):
 
 while True:
 
-    locals().update(response(url))
-    
-    reading_ts = datetime.datetime.strptime(aifstime_utc, '%Y%m%d%H%M%S')
-    reading_age = (datetime.datetime.utcnow() - reading_ts).seconds
+    try:
+        locals().update(response(url))
 
-    dict_msg={"location":location,"temperature":air_temp, "feels_like":apparent_t, "humidity":rel_hum}
-    
-    msg = json.dumps(dict_msg)
+        reading_ts = datetime.datetime.strptime(aifstime_utc, '%Y%m%d%H%M%S')
+        reading_age = (datetime.datetime.utcnow() - reading_ts).seconds
 
-#    print(msg)
+        dict_msg={"location":location,"temperature":air_temp, "feels_like":apparent_t, "humidity":rel_hum}
+        
+        msg = json.dumps(dict_msg)
 
-    client.publish(topic,msg)
+        client.publish(topic,msg)
+
+    except:
+        print("Error obtaining update")
+
     time.sleep(600)
