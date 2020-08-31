@@ -40,7 +40,8 @@ while True:
 
         client.publish(topic,msg)
 
-    except:
-        print("Error obtaining update")
+    except Exception as ex:
+        print("Error obtaining update " + str(ex))
+        pass
 
     time.sleep(600)
