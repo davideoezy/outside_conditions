@@ -9,7 +9,7 @@ import time
 import paho.mqtt.client as mqtt
 
 # Set variables
-topic = "home/outside/sensortest"
+topic = "home/outside/sensor"
 measurementName = "temperature"
 location = "outside"
 
