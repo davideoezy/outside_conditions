@@ -12,4 +12,5 @@ datetime
 # json
 # urllib
 paho-mqtt
+requests
 
