@@ -22,7 +22,7 @@ client.connect(broker_address, keepalive=500)
 
 while True:
 
-    jsonData = response.get(url).json()
+    jsonData = requests.get(url).json()
 
     current_reading = jsonData['observations']['data'][0]
 
