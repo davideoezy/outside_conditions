@@ -26,7 +26,10 @@ while True:
 
     current_reading = jsonData['observations']['data'][0]
 
-    dict_msg={"location":location,"temperature":air_temp, "feels_like":apparent_t, "humidity":rel_hum}
+    dict_msg={"location":location,
+        "temperature":current_reading['air_temp'], 
+        "feels_like":current_reading['apparent_t'],
+        "humidity":current_reading['rel_hum']}
 
     msg = json.dumps(dict_msg)
 
