@@ -21,10 +21,18 @@ client.connect(broker_address, keepalive=500)
 
 
 while True:
+    response = None
 
-    jsonData = requests.get(url).json()
+    while response is None:
+        try:
+            response = requests.get(url, timeout = 30).json()
+            current_reading = response['observations']['data'][0]
+            break
 
-    current_reading = jsonData['observations']['data'][0]
+        except:
+            print('Connection error occurred')
+            time.sleep(1.5)
+            continue
 
     dict_msg={"location":location,
         "temperature":current_reading['air_temp'], 
