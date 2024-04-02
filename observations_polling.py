@@ -23,24 +23,23 @@ client.connect(broker_address, keepalive=500)
 while True:
     response = None
 
-    while response is None:
+    with requests.get(url, timeout = 30) as request:
         try:
-            response = requests.get(url, timeout = 30).json()
+            response = request.json()
             current_reading = response['observations']['data'][0]
-            break
 
-        except:
-            print('Connection error occurred')
-            time.sleep(1.5)
-            continue
+            dict_msg={"location":location,
+                "temperature":current_reading['air_temp'], 
+                "feels_like":current_reading['apparent_t'],
+                "humidity":current_reading['rel_hum']}
 
-    dict_msg={"location":location,
-        "temperature":current_reading['air_temp'], 
-        "feels_like":current_reading['apparent_t'],
-        "humidity":current_reading['rel_hum']}
+            msg = json.dumps(dict_msg)
 
-    msg = json.dumps(dict_msg)
+            client.publish(topic,msg)
 
-    client.publish(topic,msg)
+        except (requests.Timeout, requests.ConnectionError, requests.HTTPError) as err:
+            print("Error while trying to GET data")
+            print(err)
 
-    time.sleep(600)
+        finally:
+            time.sleep(600)
