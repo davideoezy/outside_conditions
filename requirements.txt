@@ -11,6 +11,6 @@ datetime
 # subprocess
 # json
 # urllib
-paho-mqtt
+paho-mqtt<2.0.0
 requests
 
